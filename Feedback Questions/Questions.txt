@@ -1,0 +1,12 @@
+1. Which medium would you prefer to give your feedback? 
+2. Do you think every education system should have an interactive feedback system?
+3. What do you think if we provide a chatbot to help?
+4. Do you think having an interactive chatbot will improve the quality of education?
+5. Explain the system and ask what are your comments are on the system?
+6. What do you prefer apart from this approach?
+7. Do you think that the feedbacks you give, is reflected in the system? Why ?
+8. There are hundreads of responses for the feedback. What do you think we should do with it?
+9. Do you think vizualization of all those responses can be a simple and easy solution to get information out of the data?
+10. Do you know about chatbots? Have you ever used it? you think it is a cool to use?
+11. There are always 0-5 scales for feedback. Do you like that system? Have you ever encountered in a situation where you want to give between 3-4?
+12.Where do you think chatbots can be used? In which area? And what about feedbacks?
