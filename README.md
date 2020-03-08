@@ -12,3 +12,9 @@ Some protocols to follow:
   
  Status: **Designing the system**
 
+{% page-ref page="system-design.md" %}
+
+{% page-ref page="feedback-responses/" %}
+
+
+
