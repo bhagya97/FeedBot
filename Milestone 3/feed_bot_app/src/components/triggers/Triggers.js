@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { SideMenu } from "../SideMenu";
-import { Header, Divider, Segment, Grid, Form, Icon } from "semantic-ui-react";
+import {
+  Header,
+  Divider,
+  Segment,
+  Grid,
+  Form,
+  Icon,
+  Container
+} from "semantic-ui-react";
 import { DateInput, TimeInput } from "semantic-ui-calendar-react";
 import {
   form_type,
@@ -9,7 +17,7 @@ import {
   department_list,
   broadcast_type
 } from "./configLists";
-
+import TopBar from "../TopBar";
 class Triggers extends React.Component {
   constructor(props) {
     super(props);
@@ -146,80 +154,87 @@ class Triggers extends React.Component {
   };
 
   submitFrom = () => {
-    const {lists, ...form} = this.state;
-    console.log({...form})
+    const { lists, ...form } = this.state;
+    console.log({ ...form });
   };
   render() {
     return (
-      <Grid columns={2}>
-        <Grid.Row>
-          <Grid.Column width={3}>
-            <SideMenu activeItem="triggers" />
-          </Grid.Column>
-          <Grid.Column as={Segment} width={12}>
-            <Header>Triggers</Header>
-            <Divider />
-            <Form>
-              <Form.Group widths="equal" inline>
-                <Form.Select
-                  label="Form Type"
-                  options={this.state.lists.form_type}
-                  defaultValue={this.state.lists.form_type[0].value}
-                  onChange={(e, { value }) => {
-                    this.setState({
-                      formType: value
-                    });
-                  }}
-                />
-                <Form.Select
-                  label="Broadcast Type"
-                  options={this.state.lists.broadcast_type}
-                  defaultValue={this.state.lists.broadcast_type[0].value}
-                  onChange={(e, { value }) => {
-                    this.setState({
-                      broadcast: value
-                    });
-                  }}
-                />
-              </Form.Group>
+      <Container fluid style={{ minHeight: "100vh" }}>
+        <TopBar />
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column width={3}>
+              <SideMenu activeItem="triggers" />
+            </Grid.Column>
+            <Grid.Column
+              
+              width={12}
+              style={{ "padding-top": "3.5rem" }}
+            >
+              <Header>Triggers</Header>
+              <Divider />
+              <Form>
+                <Form.Group widths="equal" inline>
+                  <Form.Select
+                    label="Form Type"
+                    options={this.state.lists.form_type}
+                    defaultValue={this.state.lists.form_type[0].value}
+                    onChange={(e, { value }) => {
+                      this.setState({
+                        formType: value
+                      });
+                    }}
+                  />
+                  <Form.Select
+                    label="Broadcast Type"
+                    options={this.state.lists.broadcast_type}
+                    defaultValue={this.state.lists.broadcast_type[0].value}
+                    onChange={(e, { value }) => {
+                      this.setState({
+                        broadcast: value
+                      });
+                    }}
+                  />
+                </Form.Group>
 
-              {this.showDepartment()}
-              <Form.Group inline>
-                <label>Trigger: </label>
-                <Form.Radio
-                  label="Imidiate"
-                  value={1}
-                  checked={this.state.trigger === 1}
-                  onChange={(e, { value }) => {
-                    this.setState({
-                      trigger: value
-                    });
+                {this.showDepartment()}
+                <Form.Group inline>
+                  <label>Trigger: </label>
+                  <Form.Radio
+                    label="Imidiate"
+                    value={1}
+                    checked={this.state.trigger === 1}
+                    onChange={(e, { value }) => {
+                      this.setState({
+                        trigger: value
+                      });
+                    }}
+                  />
+                  <Form.Radio
+                    label="Scheduled"
+                    value={2}
+                    checked={this.state.trigger === 2}
+                    onChange={(e, { value }) => {
+                      this.setState({
+                        trigger: value
+                      });
+                    }}
+                  />
+                </Form.Group>
+                {this.showDateTime()}
+                <Form.Button
+                  primary
+                  onClick={() => {
+                    this.submitFrom();
                   }}
-                />
-                <Form.Radio
-                  label="Scheduled"
-                  value={2}
-                  checked={this.state.trigger === 2}
-                  onChange={(e, { value }) => {
-                    this.setState({
-                      trigger: value
-                    });
-                  }}
-                />
-              </Form.Group>
-              {this.showDateTime()}
-              <Form.Button
-                primary
-                onClick={() => {
-                  this.submitFrom();
-                }}
-              >
-                Submit
-              </Form.Button>
-            </Form>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+                >
+                  Submit
+                </Form.Button>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
     );
   }
 }
