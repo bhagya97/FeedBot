@@ -1,6 +1,9 @@
 const schema = {
     type: "object",
     properties: {
+      FormName:{
+        type:"string",
+      },
       Questions: {
         type: "array",
         items: {

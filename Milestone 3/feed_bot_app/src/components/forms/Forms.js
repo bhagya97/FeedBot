@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SideMenu } from "../SideMenu";
 import { Header, Divider, Segment, Grid, Button } from "semantic-ui-react";
 import Form from "react-jsonschema-form";
 import { schema, uiSchema } from "./form-config";
+import { Auth } from "aws-amplify";
 function Forms() {
   const submitForm = data => {
     console.log(JSON.stringify(data));
   };
-
+  useEffect(() => {
+    Auth.currentUserInfo().then(user=>console.log(user));
+  }, []);
   return (
     <Grid columns={2}>
       <Grid.Row>
