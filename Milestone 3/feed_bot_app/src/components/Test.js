@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { SideMenu } from "../SideMenu";
-import TopBar from "../TopBar";
+import { SideMenu } from "./SideMenu";
+import TopBar from "./TopBar";
 import { Header, Divider, Grid, Container } from "semantic-ui-react";
-import Form from "react-jsonschema-form";
-import { schema, uiSchema } from "./form-config";
-import { Auth } from "aws-amplify";
-function Forms() {
-  const submitForm = data => {
-    console.log(JSON.stringify(data));
-  };
-
+import { ChatBot } from "aws-amplify-react";
+function Test() {
   return (
     <Container fluid style={{ minHeight: "100vh" }}>
       <TopBar />
@@ -19,14 +13,15 @@ function Forms() {
             <SideMenu activeItem="forms" />
           </Grid.Column>
           <Grid.Column width={12} style={{ paddingTop: "3.5rem" }}>
-            <Header>Forms</Header>
+            <Header>Test</Header>
             <Divider />
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={(d, e) => {
-                submitForm(d);
-              }}
+            <ChatBot
+              title="My Bot"
+              botName="FeedBot"
+              welcomeMessage="Hope you are doing good! Type 'Get Started' to Start"
+              // onComplete={this.handleComplete.bind(this)}
+              clearOnComplete={true}
+              conversationModeOn={false}
             />
           </Grid.Column>
         </Grid.Row>
@@ -35,4 +30,4 @@ function Forms() {
   );
 }
 
-export { Forms };
+export { Test };

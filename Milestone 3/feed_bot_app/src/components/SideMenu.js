@@ -20,6 +20,9 @@ function SideMenu({ activeItem }) {
       <Menu.Item as={Link} to="/settings" active={activeItem === "settings"}>
         Settings
       </Menu.Item>
+      <Menu.Item as={Link} to="/test" active={activeItem === "test"}>
+        Test
+      </Menu.Item>
       </Menu>
   );
 }
