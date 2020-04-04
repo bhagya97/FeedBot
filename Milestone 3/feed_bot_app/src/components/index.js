@@ -5,4 +5,4 @@ export * from "./analysis/Analysis";
 export * from "./analysis/Graphs";
 export * from "./About";
 export * from "./Settings";
-export * from "./Test";
+export * from "./Chat";

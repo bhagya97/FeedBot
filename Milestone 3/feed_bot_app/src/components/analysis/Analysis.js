@@ -8,7 +8,6 @@ import {
   Form,
   Container,
 } from "semantic-ui-react";
-import { professor_list, course_list } from "../triggers/configLists";
 import { useHistory } from "react-router-dom";
 import TopBar from "../TopBar";
 import { API_URL } from "../../constants/urls";

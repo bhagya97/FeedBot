@@ -78,11 +78,16 @@ def courses():
         jsonify(code=1, courses=dumps(db.courses.find({"department_id": ObjectId(deparment)}))))
 
 
-# @app.route('/forms')
-# def forms():
-#     client = get_db()
-#     db = client.feedbot
-#     return make_json_response(jsonify(code=1, forms=dumps(db.forms.find({}, {'FormName': 1}))))
+@app.route('/chat', methods=['POST'])
+def chat():
+    client = get_db()
+    db = client.feedbot
+    payload = request.get_json()
+    if payload is not None and (('answer' and 'question') in payload.keys()):
+        question = payload['question']
+        answer = payload['answer']
+        return make_json_response(jsonify(code=1, msg='Sucessful'))
+    return make_json_response(msg='Unsuccessful Insertion')
 
 
 @app.route('/savetrigger', methods=['POST'])

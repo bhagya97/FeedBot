@@ -9,7 +9,6 @@ import {
   Form,
   Button,
 } from "semantic-ui-react";
-// import { ChatBot } from "aws-amplify-react";
 import { ChatFeed, Message } from "react-chat-ui";
 
 function Chat() {
@@ -22,6 +21,12 @@ function Chat() {
     new Message({ id: 0, message: "I'm you -- the blue bubble!" }),
   ]);
 
+  useEffect(() => {
+    fetchMessages();
+  }, []);
+
+  const fetchMessages = () => {};
+
   return (
     <Container fluid style={{ minHeight: "100vh" }}>
       <TopBar />
@@ -33,14 +38,6 @@ function Chat() {
           <Grid.Column width={12} style={{ paddingTop: "3.5rem" }}>
             <Header>Chat</Header>
             <Divider />
-            {/* <ChatBot
-              title="My Bot"
-              botName="FeedBot"
-              welcomeMessage="Hope you are doing good! Type 'Get Started' to Start"
-              // onComplete={this.handleComplete.bind(this)}
-              clearOnComplete={true}
-              conversationModeOn={false}
-            /> */}
             <Grid>
               <Grid.Column width={8}>
                 <ChatFeed
@@ -59,25 +56,27 @@ function Chat() {
                     },
                   }}
                 />
-                <Form reply>
-                  <Form.TextArea
-                    value={currentMsg}
-                    onChange={(e, { value }) => {
-                      setcurrentMsg(value);
-                    }}
-                  />
-                  <Button
-                    content="Send"
-                    labelPosition="left"
-                    icon="send"
-                    primary
-                    onClick={()=>{
-                      let msg = new Message({ id: 0, message: currentMsg });
-                      setMessages([ ...messages, msg])
-                      setcurrentMsg('');
-                    }}
-                  />
-                </Form>
+                <Grid.Row>
+                  <Form reply>
+                    <Form.TextArea
+                      value={currentMsg}
+                      onChange={(e, { value }) => {
+                        setcurrentMsg(value);
+                      }}
+                    />
+                    <Button
+                      content="Send"
+                      labelPosition="left"
+                      icon="send"
+                      primary
+                      onClick={() => {
+                        let msg = new Message({ id: 0, message: currentMsg });
+                        setMessages([...messages, msg]);
+                        setcurrentMsg("");
+                      }}
+                    />
+                  </Form>
+                </Grid.Row>
               </Grid.Column>
             </Grid>
           </Grid.Column>
