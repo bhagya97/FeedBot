@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -9,12 +9,23 @@ import {
   Tooltip,
   Legend,
   ReferenceLine,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 import { data } from "./analysisConfig";
+import { API_URL } from "../../constants/urls";
 
-function BarChartComponent() {
+function BarChartComponent({ courseId }) {
   const [maxScore, setMaxScore] = useState(100);
+
+  useEffect(() => {
+    fetchAnalysis(courseId);
+  }, [courseId]);
+
+  const fetchAnalysis = (course) => {
+    fetch(API_URL + "/analysis?id=" + course).then((response) =>
+      console.log(response.json())
+    );
+  };
 
   const renderCustomBarLabel = ({ payload, x, y, width, height, value }) => {
     return (
@@ -36,7 +47,7 @@ function BarChartComponent() {
           top: 5,
           right: 30,
           left: 20,
-          bottom: 5
+          bottom: 5,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -44,7 +55,7 @@ function BarChartComponent() {
         <YAxis type="number" domain={[0, maxScore + 10]} />
         <Tooltip />
         <Legend />
-        <ReferenceLine y={maxScore} label="Number of Students" stroke="red" />
+        {/* <ReferenceLine y={maxScore} label="Number of Students" stroke="red" /> */}
         <Bar dataKey="score" fill="#8884d8" label={renderCustomBarLabel} />
       </BarChart>
     </ResponsiveContainer>

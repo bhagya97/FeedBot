@@ -7,7 +7,7 @@ import {
   About,
   Settings,
   Graphs,
-  Test
+  Chat
 } from "./components";
 
 const Routes = () => (
@@ -18,7 +18,7 @@ const Routes = () => (
     <Route path="/report/:courseId" component={Graphs} />
     <Route path="/about" component={About} />
     <Route path="/settings" component={Settings} />
-    <Route path="/test" component={Test} />
+    <Route path="/chat" component={Chat} />
   </Switch>
 );
 

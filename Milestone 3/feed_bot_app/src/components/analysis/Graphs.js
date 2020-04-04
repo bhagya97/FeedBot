@@ -1,9 +1,10 @@
 import React from "react";
 import { SideMenu } from "../SideMenu";
-import { Header, Grid, Segment, Divider, Tab } from "semantic-ui-react";
+import { Header, Grid, Segment, Divider, Tab, Container } from "semantic-ui-react";
 import BarChartComponent from "./BarChartComponent";
 import WordCloudComponent from "./WordCloudComponent";
 import { useParams } from "react-router-dom";
+import TopBar from "../TopBar";
 
 function Graphs() {
   let { courseId } = useParams();
@@ -16,7 +17,7 @@ function Graphs() {
           <Tab.Pane>
             <BarChartComponent courseId={courseId} />
           </Tab.Pane>
-        )
+        ),
       },
       {
         menuItem: "Word Cloud",
@@ -24,24 +25,27 @@ function Graphs() {
           <Tab.Pane>
             <WordCloudComponent courseId={courseId} />
           </Tab.Pane>
-        )
-      }
+        ),
+      },
     ];
   };
 
   return (
-    <Grid columns={2}>
-      <Grid.Row>
-        <Grid.Column width={3}>
-          <SideMenu activeItem="analysis" />
-        </Grid.Column>
-        <Grid.Column as={Segment} width={12}>
-          <Header>Analysis</Header>
-          <Divider />
-          <Tab panes={getPanes()} />
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+    <Container fluid style={{ minHeight: "100vh" }}>
+      <TopBar />
+      <Grid columns={2}>
+        <Grid.Row>
+          <Grid.Column width={3}>
+            <SideMenu activeItem="analysis" />
+          </Grid.Column>
+          <Grid.Column as={Segment} width={12}>
+            <Header>Analysis</Header>
+            <Divider />
+            <Tab panes={getPanes()} />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Container>
   );
 }
 

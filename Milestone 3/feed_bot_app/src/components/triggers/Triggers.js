@@ -3,54 +3,98 @@ import { SideMenu } from "../SideMenu";
 import {
   Header,
   Divider,
-  Segment,
+  Modal,
+  Button,
   Grid,
   Form,
   Icon,
-  Container
+  Container,
 } from "semantic-ui-react";
 import { DateInput, TimeInput } from "semantic-ui-calendar-react";
-import {
-  form_type,
-  professor_list,
-  course_list,
-  department_list,
-  broadcast_type
-} from "./configLists";
+import { form_type, professor_list, broadcast_type } from "./configLists";
 import TopBar from "../TopBar";
+import { API_URL } from "../../constants/urls";
+
 class Triggers extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       formType: 1,
-      startTime: -1,
-      startDate: -1,
+      startTime: "Select Time",
+      startDate: "Select Date",
       trigger: 1,
-      lists: {}
+      modalOpen: false,
+      lists: {},
     };
+    this.state = { ...this.initialState };
   }
 
   UNSAFE_componentWillMount() {
+    fetch(API_URL + "/forms")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let forms = JSON.parse(responseJson.forms);
+        forms = forms.map((item) => {
+          return { text: item.FormName, value: item._id.$oid };
+        });
+        this.setState({
+          lists: {
+            ...this.state.lists,
+            form_type: [{ text: "Chatbot", value: 1 }, ...forms],
+          },
+        });
+      });
+    this.fetchDepartments();
     this.setState({
-      ...this.state,
       lists: {
         ...this.state.lists,
         form_type,
         broadcast_type,
-        department_list,
-        course_list,
-        professor_list
-      }
+        professor_list,
+      },
     });
   }
 
   selectProfessor = () => {
-    const prof = this.state.lists.professor_list.find(p => {
+    const prof = this.state.lists.professor_list.find((p) => {
       return p.course === this.state.course;
     });
     if (prof !== undefined) {
       return prof.course;
     }
+  };
+
+  fetchDepartments = () => {
+    fetch(API_URL + "/departments")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let departments = JSON.parse(responseJson.departments);
+        departments = departments.map((item) => {
+          return { text: item.name, value: item._id.$oid };
+        });
+        this.setState({
+          lists: {
+            ...this.state.lists,
+            department_list: departments,
+          },
+        });
+      });
+  };
+  fetchCourses = (department) => {
+    fetch(API_URL + "/courses?d_id=" + department)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let courses = JSON.parse(responseJson.courses);
+        courses = courses.map((item) => {
+          return { text: item.name, value: item._id.$oid };
+        });
+        this.setState({
+          lists: {
+            ...this.state.lists,
+            course_list: courses,
+          },
+        });
+      });
   };
 
   showDepartment = () => {
@@ -64,8 +108,9 @@ class Triggers extends React.Component {
             placeholder="Select"
             onChange={(e, { value }) => {
               this.setState({
-                department: value
+                department: value,
               });
+              this.fetchCourses(value);
             }}
           />
 
@@ -76,7 +121,7 @@ class Triggers extends React.Component {
             placeholder="Select"
             onChange={(e, { value }) => {
               this.setState({
-                course: value
+                course: value,
               });
             }}
           />
@@ -89,7 +134,7 @@ class Triggers extends React.Component {
             value={this.selectProfessor()}
             onChange={(e, { value }) => {
               this.setState({
-                professor: value
+                professor: value,
               });
             }}
           />
@@ -107,7 +152,7 @@ class Triggers extends React.Component {
           <DateInput
             placeholder="Date"
             label="Scheduled Date"
-            popupPosition="bottom right"
+            popupPosition="right center"
             className="example-calendar-input"
             name="date"
             closable
@@ -122,14 +167,14 @@ class Triggers extends React.Component {
             autoComplete="off"
             onChange={(e, { value }) => {
               this.setState({
-                startDate: value
+                startDate: value,
               });
             }}
           />
           <TimeInput
             placeholder="Time"
             label="Scheduled Time"
-            popupPosition="bottom right"
+            popupPosition="right center"
             className="example-calendar-input"
             name="time"
             animation="horizontal flip"
@@ -142,7 +187,7 @@ class Triggers extends React.Component {
             iconPosition="left"
             onChange={(e, { value }) => {
               this.setState({
-                startTime: value
+                startTime: value,
               });
             }}
           />
@@ -154,8 +199,21 @@ class Triggers extends React.Component {
   };
 
   submitFrom = () => {
-    const { lists, ...form } = this.state;
-    console.log({ ...form });
+    const { lists, modalOpen, ...form } = this.state;
+    console.log(form);
+    fetch(API_URL + "/savetrigger", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "post",
+      body: JSON.stringify({ form: form }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson["code"] === 1) {
+          this.setState({ modalOpen: true });
+        }
+      });
   };
   render() {
     return (
@@ -166,11 +224,7 @@ class Triggers extends React.Component {
             <Grid.Column width={3}>
               <SideMenu activeItem="triggers" />
             </Grid.Column>
-            <Grid.Column
-              
-              width={12}
-              style={{ "padding-top": "3.5rem" }}
-            >
+            <Grid.Column width={12} style={{ paddingTop: "3.5rem" }}>
               <Header>Triggers</Header>
               <Divider />
               <Form>
@@ -181,7 +235,7 @@ class Triggers extends React.Component {
                     defaultValue={this.state.lists.form_type[0].value}
                     onChange={(e, { value }) => {
                       this.setState({
-                        formType: value
+                        formType: value,
                       });
                     }}
                   />
@@ -191,7 +245,7 @@ class Triggers extends React.Component {
                     defaultValue={this.state.lists.broadcast_type[0].value}
                     onChange={(e, { value }) => {
                       this.setState({
-                        broadcast: value
+                        broadcast: value,
                       });
                     }}
                   />
@@ -206,7 +260,7 @@ class Triggers extends React.Component {
                     checked={this.state.trigger === 1}
                     onChange={(e, { value }) => {
                       this.setState({
-                        trigger: value
+                        trigger: value,
                       });
                     }}
                   />
@@ -216,7 +270,7 @@ class Triggers extends React.Component {
                     checked={this.state.trigger === 2}
                     onChange={(e, { value }) => {
                       this.setState({
-                        trigger: value
+                        trigger: value,
                       });
                     }}
                   />
@@ -234,6 +288,27 @@ class Triggers extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <Modal
+          size="mini"
+          open={this.state.modalOpen}
+          style={{ position: "relative", maxHeight: "200px" }}
+        >
+          <Modal.Header>Trigger Status</Modal.Header>
+          <Modal.Content>
+            <p>Trigger set successfully.</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              positive
+              icon="checkmark"
+              labelPosition="right"
+              content="OK"
+              onClick={() => {
+                this.setState({ modalOpen: false });
+              }}
+            />
+          </Modal.Actions>
+        </Modal>
       </Container>
     );
   }

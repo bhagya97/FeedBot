@@ -6,28 +6,22 @@ import {
   Segment,
   Divider,
   Form,
-  Container
+  Container,
 } from "semantic-ui-react";
-import {
-  department_list,
-  professor_list,
-  course_list
-} from "../triggers/configLists";
+import { professor_list, course_list } from "../triggers/configLists";
 import { useHistory } from "react-router-dom";
 import TopBar from "../TopBar";
+import { API_URL } from "../../constants/urls";
 
 function Analysis() {
-  const [lists, setLists] = useState({ department_list });
+  const [lists, setLists] = useState({});
   const [courseId, setCourseId] = useState("");
   const history = useHistory();
-  const updateCourse = department_id => {
-    setLists({
-      ...lists,
-      course_list: course_list.filter(c => {
-        return c.dept === department_id;
-      })
-    });
-  };
+
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
   const enableSubmit = () => {
     if (courseId === "") {
       return true;
@@ -35,7 +29,31 @@ function Analysis() {
       return false;
     }
   };
-
+  const fetchDepartments = () => {
+    fetch(API_URL + "/departments")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let departments = JSON.parse(responseJson.departments);
+        departments = departments.map((item) => {
+          return { text: item.name, value: item._id.$oid };
+        });
+        setLists({ ...lists, department_list: departments });
+      });
+  };
+  const fetchCourses = (department) => {
+    fetch(API_URL + "/courses?d_id=" + department)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let courses = JSON.parse(responseJson.courses);
+        courses = courses.map((item) => {
+          return { text: item.name, value: item._id.$oid };
+        });
+        setLists({
+          ...lists,
+          course_list: courses,
+        });
+      });
+  };
   return (
     <Container fluid style={{ minHeight: "100vh" }}>
       <TopBar />
@@ -54,7 +72,7 @@ function Analysis() {
                 options={lists.department_list}
                 placeholder="Select"
                 onChange={(e, { value }) => {
-                  updateCourse(value);
+                  fetchCourses(value);
                 }}
               />
 

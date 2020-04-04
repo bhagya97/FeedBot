@@ -4,10 +4,17 @@ import TopBar from "../TopBar";
 import { Header, Divider, Grid, Container } from "semantic-ui-react";
 import Form from "react-jsonschema-form";
 import { schema, uiSchema } from "./form-config";
-import { Auth } from "aws-amplify";
+import { API_URL } from "../../constants/urls";
+
 function Forms() {
-  const submitForm = data => {
-    console.log(JSON.stringify(data));
+  const submitForm = ({ formData }) => {
+    fetch(API_URL + "/saveform", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "post",
+      body: JSON.stringify({ formData: formData }),
+    }).then((response) => console.log(response));
   };
 
   return (

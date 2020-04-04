@@ -14,16 +14,16 @@ function SideMenu({ activeItem }) {
       <Menu.Item as={Link} to="/analysis" active={activeItem === "analysis"}>
         Analysis
       </Menu.Item>
-      <Menu.Item as={Link} to="/about" active={activeItem === "about"}>
+      {/* <Menu.Item as={Link} to="/about" active={activeItem === "about"}>
         About Us
       </Menu.Item>
       <Menu.Item as={Link} to="/settings" active={activeItem === "settings"}>
         Settings
+      </Menu.Item> */}
+      <Menu.Item as={Link} to="/chat" active={activeItem === "chat"}>
+        Chat
       </Menu.Item>
-      <Menu.Item as={Link} to="/test" active={activeItem === "test"}>
-        Test
-      </Menu.Item>
-      </Menu>
+    </Menu>
   );
 }
 
