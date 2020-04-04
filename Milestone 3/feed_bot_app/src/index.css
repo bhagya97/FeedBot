@@ -11,13 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-#chat-panel {
-  height: 300px;
-  flex-direction: row !important;
-}
-
-.chat-history{
-  width: 100%!important;
-  align-self: flex-end;
-}
