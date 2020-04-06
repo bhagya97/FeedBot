@@ -25,8 +25,9 @@ question = ['How are you doing?',
             'Does your faculty interact well in the class?'
             'How clearly does this teacher present the information that you need to learn?']
 
-common_words = ['so', 'a', 'an', 'hi', 'hello', 'am',
-                'was', 'is', 'the', 'that', 'these', 'those', 'doing', 'okay']
+common_words = ['so', 'a', 'an', 'hi', 'hello', 'am', 'was', 'is', 'the',
+                'that', 'these', 'those', 'doing', 'okay', 'i', 'he',
+                'she', 'it', 'we', 'are', 'were', 'in', 'do', 'does', 'think']
 
 
 def connect_mongo():
