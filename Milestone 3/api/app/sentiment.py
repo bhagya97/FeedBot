@@ -8,7 +8,7 @@ def save(answer):
     pass
 
 def fn(answer):
-    sentence = textblob.TextBlob('I am a good boy')
+    sentence = textblob.TextBlob(answer)
     save(sentence.sentiment.polarity)
     question=['So what are you upto these days?','Are you enjoying the semester?','Do you feel comfortable studying in the class?']
     global count
