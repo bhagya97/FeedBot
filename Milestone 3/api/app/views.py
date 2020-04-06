@@ -13,11 +13,21 @@ import string
 pattern = re.compile('[\W_]+')
 MONGO_STRING = 'mongodb+srv://darshan:JNccCEOyemZ5mrN7@ti-project-1j7gp.mongodb.net/test?retryWrites=true&w=majority'
 
-question = ['How are you doing?', 'Are you enjoying the semester?',
-            'Do you feel comfortable studying in the class?']
+question = ['How are you doing?',
+            'Do you think that the course taught by this faculty is completed in due time?',
+            'Are you enjoying the semester?',
+            'Do you feel comfortable studying in the class?',
+            'Do you think the faculty is punctual in his behavior?',
+            'Does your faculty motivate you to perform better?',
+            'Do you feel the faculty is creative and has unique way of teaching?',
+            'Does the faculty have in depth knowledge about their subject?',
+            'Does your faculty encourage you to perform better?',
+            'Does your faculty interact well in the class?'
+            'How clearly does this teacher present the information that you need to learn?']
 
 common_words = ['so', 'a', 'an', 'hi', 'hello', 'am',
                 'was', 'is', 'the', 'that', 'these', 'those', 'doing', 'okay']
+
 
 def connect_mongo():
     client = MongoClient(MONGO_STRING)
