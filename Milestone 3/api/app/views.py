@@ -7,12 +7,17 @@ from bson.objectid import ObjectId
 from bson.json_util import dumps
 import sys
 import textblob
+import re
+import string
 
+pattern = re.compile('[\W_]+')
 MONGO_STRING = 'mongodb+srv://darshan:JNccCEOyemZ5mrN7@ti-project-1j7gp.mongodb.net/test?retryWrites=true&w=majority'
 
 question = ['How are you doing?', 'Are you enjoying the semester?',
             'Do you feel comfortable studying in the class?']
 
+common_words = ['so', 'a', 'an', 'hi', 'hello', 'am',
+                'was', 'is', 'the', 'that', 'these', 'those', 'doing', 'okay']
 
 def connect_mongo():
     client = MongoClient(MONGO_STRING)
@@ -83,6 +88,25 @@ def courses():
         jsonify(code=1, courses=dumps(db.courses.find({"department_id": ObjectId(deparment)}))))
 
 
+@app.route('/get_words')
+def words():
+    a = {}
+    client = get_db()
+    db = client.feedbot
+    answers = db.sentiment.find({}, {"_id": 0, "answer": 1})
+    for answer in answers:
+        for a_word in answer['answer'].split():
+            ans = pattern.sub('', a_word.lower())
+            if ans not in common_words:
+                if a_word in a.keys():
+                    a[ans] += 1
+                else:
+                    a[ans] = 1
+    words = list(map(lambda kv: dict(label=kv[0], y=kv[1]), a.items()))
+    return make_json_response(
+        jsonify(code=1, words=words))
+
+
 def fn(answer, q_no):
     sentence = textblob.TextBlob(answer)
     try:
@@ -103,7 +127,7 @@ def chat():
         next_question, polarity = fn(answer, q_no)
         print(polarity)
         inserted = db.sentiment.insert_one(
-            dict(question=question[q_no], answer=answer, sentiment=polarity))
+            dict(question=question[q_no], answer=answer.lower(), sentiment=polarity))
         return make_json_response(
             jsonify(code=1, next_question=next_question, msg='Successful')
         )
