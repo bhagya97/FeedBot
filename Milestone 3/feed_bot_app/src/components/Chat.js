@@ -6,9 +6,10 @@ import { Widget, addResponseMessage, toggleWidget } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
 
 function Chat() {
+  const [q_no, setQno] = useState(0);
   useEffect(() => {
     toggleWidget();
-    addResponseMessage("Hi! How are you doing?");
+    addResponseMessage("How are you doing?");
   }, []);
 
   const sendMessage = (msg) => {
@@ -17,12 +18,13 @@ function Chat() {
         "Content-Type": "application/json",
       },
       method: "post",
-      body: JSON.stringify({ answer: msg }),
+      body: JSON.stringify({ answer: msg, q_no: q_no }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.code === 1) {
           addResponseMessage(responseJson.next_question);
+          setQno(q_no + 1);
         }
       });
   };
@@ -32,8 +34,8 @@ function Chat() {
       <div style={{ width: "320px", alignSelf: "center" }}>
         <Widget
           handleNewUserMessage={sendMessage}
-          title="My new awesome title"
-          subtitle="And my cool subtitle"
+          title="FeedBot"
+          subtitle="Coversational Bot"
         />
       </div>
     </div>

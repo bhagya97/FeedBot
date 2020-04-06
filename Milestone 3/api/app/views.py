@@ -6,8 +6,12 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 import sys
-import sentiment_file
+import textblob
+
 MONGO_STRING = 'mongodb+srv://darshan:JNccCEOyemZ5mrN7@ti-project-1j7gp.mongodb.net/test?retryWrites=true&w=majority'
+
+question = ['How are you doing?', 'Are you enjoying the semester?',
+            'Do you feel comfortable studying in the class?']
 
 
 def connect_mongo():
@@ -79,14 +83,31 @@ def courses():
         jsonify(code=1, courses=dumps(db.courses.find({"department_id": ObjectId(deparment)}))))
 
 
+def fn(answer, q_no):
+    sentence = textblob.TextBlob(answer)
+    try:
+        q = question[q_no+1]
+    except:
+        q = 'Okay then, I will catch you later. Nice talking with you as always.'
+    return q, sentence.sentiment.polarity
+
+
 @app.route('/chat', methods=['POST'])
 def chat():
     client = get_db()
     db = client.feedbot
     payload = request.get_json()
-    if payload is not None and 'answer' in payload.keys():
+    if payload is not None and ('answer' and 'q_no') in payload.keys():
         answer = payload['answer']
+<<<<<<< HEAD
         next_question=sentiment_file.fn(answer)
+=======
+        q_no = payload['q_no']
+        next_question, polarity = fn(answer, q_no)
+        print(polarity)
+        inserted = db.sentiment.insert_one(
+            dict(question=question[q_no], answer=answer, sentiment=polarity))
+>>>>>>> 901a9a4a05afc0e1c7ca35ab7ddce5d2eff38d2b
         return make_json_response(
             jsonify(code=1, next_question=next_question, msg='Successful')
         )
