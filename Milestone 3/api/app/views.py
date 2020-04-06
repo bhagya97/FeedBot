@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 import sys
-import sentiment
+import sentiment_file
 MONGO_STRING = 'mongodb+srv://darshan:JNccCEOyemZ5mrN7@ti-project-1j7gp.mongodb.net/test?retryWrites=true&w=majority'
 
 
