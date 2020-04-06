@@ -86,7 +86,7 @@ def chat():
     payload = request.get_json()
     if payload is not None and 'answer' in payload.keys():
         answer = payload['answer']
-        next_question=sentiment.fn(answer)
+        next_question=sentiment_file.fn(answer)
         return make_json_response(
             jsonify(code=1, next_question=next_question, msg='Successful')
         )
