@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 import sys
+import sentiment
 MONGO_STRING = 'mongodb+srv://darshan:JNccCEOyemZ5mrN7@ti-project-1j7gp.mongodb.net/test?retryWrites=true&w=majority'
 
 
@@ -85,8 +86,9 @@ def chat():
     payload = request.get_json()
     if payload is not None and 'answer' in payload.keys():
         answer = payload['answer']
+        next_question=sentiment.fn(answer)
         return make_json_response(
-            jsonify(code=1, next_question="Next Question Here", msg='Successful')
+            jsonify(code=1, next_question=next_question, msg='Successful')
         )
     return make_json_response(msg='Unsuccessful Insertion')
 
