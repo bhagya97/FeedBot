@@ -2,25 +2,18 @@
 
 **AI based Feedback Portal System**  
 
-<h5> Link to the video of prototype : https://vimeo.com/404854636 <br>
-Some protocols to follow:  
- 1. While naming the file:  
- \* No spacing, Use underscore  
- \* Naming convention - "file_name_\(developer\_name\)" For example: chatbot\_architecture\(darshan\).jpg  
- 2. Every file will be present in the respective milestone folder. 3. There will be a folder named "Original files" in each milestone. That folder will contain files, used for developement purposes.
+<h5> Link to the video of prototype : https://vimeo.com/404854636 <br><br>
 
 <br>
-* Future works:<br>
-    1. Create better and rigid database<br>
+<h3>* Future works:<br></h3>
+<h4>1. Create better and rigid database<br>
     2. Better Visualization (still lot of room for improvements)<br>
     3. Creating efficient NLP model (could not give enough time to this, and is of high essence.)<br>
     4.Much better analytics (lot of improvements can be done)<br>
     5. Better UI<br>
     6. Better Chatbot Engine (Currently it is a simple chatbot with static functionality which can be made dynamic and highly functional.)<br>
     <b> The project contains lot of technologies, implementing which takes time. Due to some unwanted situations and less time, we could not implement all the planned functionalities. Although we have created a prototype which can give an idea about the solution we are aiming for.</b><br>
-    
-    
-  
+    </h4>
  This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
